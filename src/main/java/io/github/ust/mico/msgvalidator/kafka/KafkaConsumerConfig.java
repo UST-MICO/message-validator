@@ -1,6 +1,7 @@
 package io.github.ust.mico.msgvalidator.kafka;
 
 import io.github.ust.mico.msgvalidator.MessageListener;
+import io.github.ust.mico.msgvalidator.configuration.KafkaConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -29,11 +30,12 @@ public class KafkaConsumerConfig {
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Autowired
-    private KafkaTemplate<Object, Object> kafkaTemplate;
+    @Value("${kafka.group-id}")
+    private String groupId;
 
     @Bean
     public Map<String, Object> consumerConfigs() {
+        log.info("Using '{}' as bootstrap server", bootstrapServers);
         Map<String, Object> properties = new HashMap<>();
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapServers);
@@ -47,7 +49,7 @@ public class KafkaConsumerConfig {
         properties.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS,
                 StringDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "TestGroup");
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 
         return properties;
     }

@@ -21,7 +21,7 @@ public class MessageListener {
      *
      * @param message
      */
-    @KafkaListener(topics = "${kafka.input-topic}")
+    @KafkaListener(topics = "${kafka.input-topic}", groupId = "${kafka.group-id}")
     public void receive(String message) {
         log.debug("Received CloudEvent message: {}", message);
         websocketsTemplate.convertAndSend("/topic/messaging-bridge", message);

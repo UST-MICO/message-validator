@@ -29,20 +29,9 @@ public class KafkaConfig {
     private String inputTopic;
 
     /**
-     * The Kafka output topic.
+     * The group id is a string that uniquely identifies the group
+     * of consumer processes to which this consumer belongs.
      */
     @NotBlank
-    private String outputTopic;
-
-    /**
-     * Used to report message processing errors
-     */
-    @NotBlank
-    private String invalidMessageTopic;
-
-    /**
-     * Used to report routing errors
-     */
-    @NotBlank
-    private String deadLetterTopic;
+    private String groupId;
 }
