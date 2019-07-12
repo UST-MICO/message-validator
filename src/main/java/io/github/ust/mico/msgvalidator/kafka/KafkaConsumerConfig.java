@@ -45,7 +45,7 @@ public class KafkaConsumerConfig {
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 ErrorHandlingDeserializer2.class);
         properties.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS,
-                CloudEventDeserializer.class);
+                StringDeserializer.class);
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, "TestGroup");
 
@@ -53,13 +53,13 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, MicoCloudEventImpl> consumerFactory() {
+    public ConsumerFactory<String, String> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, MicoCloudEventImpl>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, MicoCloudEventImpl> factory =
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setErrorHandler(new SeekToCurrentErrorHandler(1));

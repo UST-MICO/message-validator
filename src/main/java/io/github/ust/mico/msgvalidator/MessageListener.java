@@ -1,8 +1,5 @@
 package io.github.ust.mico.msgvalidator;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import io.github.ust.mico.msgvalidator.configuration.KafkaConfig;
-import io.github.ust.mico.msgvalidator.kafka.MicoCloudEventImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,12 +19,12 @@ public class MessageListener {
     /**
      * Entry point for incoming messages from kafka.
      *
-     * @param cloudEvent
+     * @param message
      */
     @KafkaListener(topics = "${kafka.input-topic}")
-    public void receive(MicoCloudEventImpl<JsonNode> cloudEvent) {
-        log.info("Received CloudEvent message: {}", cloudEvent);
-        websocketsTemplate.convertAndSend("/topic/messaging-bridge", cloudEvent);
+    public void receive(String message) {
+        log.debug("Received CloudEvent message: {}", message);
+        websocketsTemplate.convertAndSend("/topic/messaging-bridge", message);
     }
 
 }
